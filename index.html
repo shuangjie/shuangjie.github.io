@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Simple-development-of-wechat-bot-using-wechaty" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/21/Simple-development-of-wechat-bot-using-wechaty/" class="article-date">
+  <time datetime="2020-04-21T13:05:16.000Z" itemprop="datePublished">2020-04-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/21/Simple-development-of-wechat-bot-using-wechaty/">Simple development of wechat bot using wechaty</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>tips: if you try to use wechaty web version, you will be know it can’t work, so this post show you how to use ipad version to make bot work, if you never use wechaty any version, this post also pass the web version, because it’s pointless.</p>
+<h2 id="what-is-it"><a href="#what-is-it" class="headerlink" title="what is it"></a>what is it</h2><p>cps-bot is a wechat bot that using wechaty to solve a lot of transfer and push work in the cps.</p>
+<h2 id="Clear-demand"><a href="#Clear-demand" class="headerlink" title="Clear demand"></a>Clear demand</h2><p>Before development, we need to clarify the requirements, that is, what do I need a robot to do<br>cps-bot just need to automatically pass friend verification, send and receive messages<br>so let’s take a look at <a href="https://github.com/wechaty/wechaty" target="_blank" rel="noopener">wechaty</a> document</p>
+<p><em>1.Automatically pass friend verification</em></p>
+<ul>
+<li>When someone adds a robot, pass or directly pass after judging the keyword of the verification message<br>After verification, automatically reply and introduce the robot function</li>
+</ul>
+<p><em>2.Reply to product link (JD)</em></p>
+<ul>
+<li>For example, reply <a href="https://item.m.jd.com/product/100008348572.html?wxa_abtest=o&amp;utm_source=iosapp&amp;utm_medium=appshare&amp;utm_campaign=t_335139774&amp;utm_term=CopyURL&amp;ad_od=share&amp;utm_user=plusmember" target="_blank" rel="noopener">https://item.m.jd.com/product/100008348572.html?wxa_abtest=o&amp;utm_source=iosapp&amp;utm_medium=appshare&amp;utm_campaign=t_335139774&amp;utm_term=CopyURL&amp;ad_od=share&amp;utm_user=plusmember</a></li>
+</ul>
+<h2 id="before-start"><a href="#before-start" class="headerlink" title="before start"></a>before start</h2><p>First of all, the wechaty-puppet-padplus version used here will be very slow to install for the first time, because the installation package contains puppeter, I have also tried it successfully two or three times, and the QR code will appear after success<br>If the scan code returns null (bug), close and run again</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-project"><a href="#Create-a-new-project" class="headerlink" title="Create a new project"></a>Create a new project</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir bot &amp; <span class="built_in">cd</span> ./bot</span><br><span class="line">$ npm init -y</span><br></pre></td></tr></table></figure>
+
+<p>Then we install the dependency packages needed by the project</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ npm install --save wechaty</span><br><span class="line">$ npm install --save wechaty-puppet-padplus</span><br><span class="line">$ npm install --save qrcode-terminal</span><br></pre></td></tr></table></figure>
+
+<p>The preparatory work is done</p>
+<h3 id="Start-to-code"><a href="#Start-to-code" class="headerlink" title="Start to code"></a>Start to code</h3><p>Write code according to needs，My file structure directory is like this: </p>
+<ul>
+<li>src<ul>
+<li>config.js</li>
+<li>index.js</li>
+<li>onFriendship.js // Friends add monitoring callback</li>
+<li>onMessage.js // Message listening callback</li>
+<li>onScan.js // monitor the callback when scanning the QR code</li>
+</ul>
+</li>
+</ul>
+<h4 id="config-js"><a href="#config-js" class="headerlink" title="config.js"></a>config.js</h4><p>put our configuration params</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">  &#x2F;&#x2F; puppet_padplus Token</span><br><span class="line">  token: &quot;puppet_padplus_f387a9c321f178ce&quot;,</span><br><span class="line">  &#x2F;&#x2F; bot name</span><br><span class="line">  name: &quot;Zeng&quot;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * wechaty-puppet-padplus index</span><br><span class="line"> *&#x2F;</span><br><span class="line"></span><br><span class="line">const &#123; Wechaty &#125; &#x3D; require(&quot;wechaty&quot;)</span><br><span class="line">const &#123; PuppetPadplus &#125; &#x3D; require(&quot;wechaty-puppet-padplus&quot;)</span><br><span class="line">const config &#x3D; require(&quot;.&#x2F;config&quot;)</span><br><span class="line"></span><br><span class="line">const onScan &#x3D; require(&quot;.&#x2F;onScan&quot;) &#x2F;&#x2F; monitor the callback when scanning the QR code</span><br><span class="line">const onMessage &#x3D; require(&quot;.&#x2F;onMessage&quot;) &#x2F;&#x2F; Message listening callback</span><br><span class="line">const onFriendShip &#x3D; require(&quot;.&#x2F;onFriendShip&quot;) &#x2F;&#x2F; Friends add monitoring callback</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; init</span><br><span class="line">const bot &#x3D; new Wechaty(&#123;</span><br><span class="line">  puppet: new PuppetPadplus(&#123;</span><br><span class="line">    token: config.token</span><br><span class="line">  &#125;),</span><br><span class="line">  name: config.name</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">bot</span><br><span class="line">  .on(&quot;scan&quot;, onScan)</span><br><span class="line">  .on(&quot;message&quot;, onMessage(bot))</span><br><span class="line">  .on(&quot;friendship&quot;, onFriendShip)</span><br><span class="line">  .start()</span><br></pre></td></tr></table></figure>
+
+<h4 id="onFriendship-js"><a href="#onFriendship-js" class="headerlink" title="onFriendship.js"></a>onFriendship.js</h4><p>Friends add monitoring callback</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Friends add monitoring callback</span><br><span class="line"> *&#x2F;</span><br><span class="line"></span><br><span class="line">const &#123; Friendship &#125; &#x3D; require(&quot;wechaty&quot;)</span><br><span class="line">const config &#x3D; require(&quot;.&#x2F;config&quot;)</span><br><span class="line">&#x2F;&#x2F; Friends add verification message to automatically agree to keywords</span><br><span class="line">const addFriendKeyword &#x3D; &quot;cps&quot; &#x2F;&#x2F;if need more , use array</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Friends add monitoring callback</span><br><span class="line">module.exports &#x3D; async function onFriendShip(friendship) &#123;</span><br><span class="line">  let logMsg</span><br><span class="line">  try &#123;</span><br><span class="line">    logMsg &#x3D; &quot;add friend&quot; + friendship.contact().name()</span><br><span class="line">    console.log(logMsg)</span><br><span class="line">    switch (friendship.type()) &#123;</span><br><span class="line">      &#x2F;**</span><br><span class="line">       * step 1 New friend request</span><br><span class="line">       * to use &#39;request.hello()&#39;&#39; to get verification message </span><br><span class="line">       * Accept this request via &#39;request.accept ()&#39;</span><br><span class="line">       *&#x2F;</span><br><span class="line">      case Friendship.Type.Receive:</span><br><span class="line">        if (addFriendKeyword &#x3D;&#x3D; friendship.hello()) &#123;</span><br><span class="line">          logMsg &#x3D; &#96;Pass verification automatically&#96;</span><br><span class="line">          await friendship.accept()</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          logMsg &#x3D; &quot;Not automatically passed because the verification message is: &quot; + friendship.hello()</span><br><span class="line">        &#125;</span><br><span class="line">        break</span><br><span class="line"></span><br><span class="line">      &#x2F;**</span><br><span class="line">       * step 2 confirm</span><br><span class="line">       *&#x2F;</span><br><span class="line">      case Friendship.Type.Confirm:</span><br><span class="line">        logMsg &#x3D; &quot;friend ship confirmed with &quot; + friendship.contact().name()</span><br><span class="line">        break</span><br><span class="line">    &#125;</span><br><span class="line">    console.log(logMsg)</span><br><span class="line">  &#125; catch (e) &#123;</span><br><span class="line">    logMsg &#x3D; e.message</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="onMessage-js"><a href="#onMessage-js" class="headerlink" title="onMessage.js"></a>onMessage.js</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Message listening callback</span><br><span class="line"> *&#x2F;</span><br><span class="line">const &#123; Message &#125; &#x3D; require(&quot;wechaty&quot;)</span><br><span class="line">&#x2F;&#x2F; node-request</span><br><span class="line">const request &#x3D; require(&quot;request&quot;)</span><br><span class="line">const urlencode &#x3D; require(&quot;urlencode&quot;)</span><br><span class="line">const config &#x3D; require(&quot;.&#x2F;config&quot;)</span><br><span class="line">&#x2F;&#x2F; bot name</span><br><span class="line">const name &#x3D; config.name</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Message listening callback</span><br><span class="line">module.exports &#x3D; bot &#x3D;&gt; &#123;</span><br><span class="line">  return async function onMessage(msg) &#123;</span><br><span class="line">    &#x2F;&#x2F; Judging that the message came from yourself, do not care, return</span><br><span class="line">    if (msg.self()) return</span><br><span class="line"></span><br><span class="line">    console.log(&quot;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&quot;)</span><br><span class="line">    console.log(&#96;msg : $&#123;msg&#125;&#96;)</span><br><span class="line">    console.log(</span><br><span class="line">      &#96;from: $&#123;msg.from() ? msg.from().name() : null&#125;: $&#123;</span><br><span class="line">        msg.from() ? msg.from().id : null</span><br><span class="line">      &#125;&#96;</span><br><span class="line">    )</span><br><span class="line">    console.log(&#96;to: $&#123;msg.to()&#125;&#96;)</span><br><span class="line">    console.log(&#96;text: $&#123;msg.text()&#125;&#96;)</span><br><span class="line">    console.log(&quot;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&quot;)</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; Determine if this message type is text</span><br><span class="line">    if (msg.type() &#x3D;&#x3D; Message.Type.Text) &#123;</span><br><span class="line"></span><br><span class="line">      &#x2F;&#x2F; request your api</span><br><span class="line">      let res &#x3D; await requestApi(msg.text())</span><br><span class="line">      &#x2F;&#x2F; return content</span><br><span class="line">      await msg.say(res)</span><br><span class="line">      </span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      console.log(&quot;The message is not text!&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * Request an interface and return the message to the user</span><br><span class="line"> * @param &#123;String&#125; info sent content</span><br><span class="line"> * @return &#123;Promise&#125; Corresponding content</span><br><span class="line"> *&#x2F;</span><br><span class="line">function requestApi(info) &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    let url &#x3D; &#96;https:&#x2F;&#x2F;cps.linkces.com&#x2F;jd&#x2F;universal&#96;</span><br><span class="line"></span><br><span class="line">    request.post(url, &#123;form:&#123;content:info&#125;&#125;,(error, response, body) &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">      let res &#x3D; JSON.parse(body)</span><br><span class="line">      if (!error &amp;&amp; res.code &#x3D;&#x3D; 0) &#123;</span><br><span class="line">        let send &#x3D; res.data.result</span><br><span class="line">        console.log(&#39;res&#39;, res)</span><br><span class="line">        resolve(send)</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        resolve(&quot;Server is busy&quot;)</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">  &#125;).then().catch( function(e)&#123;</span><br><span class="line">    &#x2F;&#x2F;do some thing</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="onScan-js"><a href="#onScan-js" class="headerlink" title="onScan.js"></a>onScan.js</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * monitor the callback when scanning the QR code</span><br><span class="line"> *&#x2F;</span><br><span class="line">const Qrterminal &#x3D; require(&quot;qrcode-terminal&quot;)</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; function onScan(qrcode, status) &#123;</span><br><span class="line">  Qrterminal.generate(qrcode, &#123; small: true &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="try-run"><a href="#try-run" class="headerlink" title="try run"></a>try run</h3><p>set up your startup script in ‘package.json’</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;start&quot;: &quot;node .&#x2F;src&#x2F;index.js&quot;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>then run </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm run start</span><br></pre></td></tr></table></figure>
+
+<p>done</p>
+<h3 id="if-you-want-my-code"><a href="#if-you-want-my-code" class="headerlink" title="if you want my code"></a>if you want my code</h3><p>github : <a href="https://github.com/shuangjie/cps-bot" target="_blank" rel="noopener">cps-bot</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/04/21/Simple-development-of-wechat-bot-using-wechaty/" data-id="ck99x8nph0000mjqj72gkbg13" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wechaty/" rel="tag">wechaty</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechaty/" rel="tag">wechaty</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/wechaty/" style="font-size: 10px;">wechaty</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/21/Simple-development-of-wechat-bot-using-wechaty/">Simple development of wechat bot using wechaty</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
